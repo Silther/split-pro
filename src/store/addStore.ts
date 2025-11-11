@@ -373,11 +373,11 @@ export function calculateParticipantSplit(
 
   if (canSplitScreenClosed) {
     let penniesLeft = updatedParticipants.reduce((acc, p) => acc + (p.amount ?? 0n), 0n);
-    const participantsToPick = updatedParticipants.filter((p) => p.amount);
+    const participantsToPick = updatedParticipants.filter((p) => p.amount).sort();
 
     if (0 < participantsToPick.length) {
-      shuffleArray(participantsToPick);
-      let i = 0;
+      let i : number = Number(amount % BigInt(participantsToPick.length));
+
       while (0n !== penniesLeft) {
         const p = participantsToPick[i % participantsToPick.length]!;
         p.amount! -= BigMath.sign(penniesLeft);
