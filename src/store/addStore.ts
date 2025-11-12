@@ -304,6 +304,7 @@ export function calculateParticipantSplit(
   participants: Participant[],
   splitType: SplitType,
   splitShares: SplitShares,
+  expanseDate: Date,
   paidBy?: Participant,
 ) {
   let canSplitScreenClosed = true;
@@ -376,7 +377,8 @@ export function calculateParticipantSplit(
     const participantsToPick = updatedParticipants.filter((p) => p.amount).sort();
 
     if (0 < participantsToPick.length) {
-      let i : number = Number(amount % BigInt(participantsToPick.length));
+      const dateOffset: number =   expanseDate.getDate() + expanseDate.getMonth() + expanseDate.getFullYear();
+      let i : number = (Number(amount % BigInt(participantsToPick.length)) + dateOffset) % participantsToPick.length;
 
       while (0n !== penniesLeft) {
         const p = participantsToPick[i % participantsToPick.length]!;
